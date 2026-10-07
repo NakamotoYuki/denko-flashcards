@@ -3,172 +3,301 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ケーブル最高許容温度 単語帳</title>
+<title>電工 単語帳</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#e9ecef; --sheath:#f8f9fa; --ink:#1d2328; --muted:#5f6b75;
-  --line:#c9d0d6; --red:#c8321e; --black:#23292e; --hide:#dfe4e8;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#15191c; --sheath:#20262b; --ink:#e8ecef; --muted:#9aa6af;
-    --line:#343c43; --red:#ff6a52; --black:#cfd6dc; --hide:#2c343a;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#15191c; --sheath:#20262b; --ink:#e8ecef; --muted:#9aa6af;
-  --line:#343c43; --red:#ff6a52; --black:#cfd6dc; --hide:#2c343a;
-}
+:root{--bg:#e9ecef;--sheath:#f8f9fa;--ink:#1d2328;--muted:#5f6b75;--line:#c9d0d6;--red:#c8321e;--ok:#1f7a45;--black:#23292e;--hide:#dfe4e8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15191c;--sheath:#20262b;--ink:#e8ecef;--muted:#9aa6af;--line:#343c43;--red:#ff6a52;--ok:#5fd08e;--black:#cfd6dc;--hide:#2c343a}}
+:root[data-theme="dark"]{--bg:#15191c;--sheath:#20262b;--ink:#e8ecef;--muted:#9aa6af;--line:#343c43;--red:#ff6a52;--ok:#5fd08e;--black:#cfd6dc;--hide:#2c343a}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
-  line-height:1.6;
-}
-main{max-width:640px; margin:0 auto; padding:28px 18px 48px}
-h1{font-size:1.5rem; font-weight:900; margin:0 0 4px; letter-spacing:.02em}
-.sub{color:var(--muted); font-size:.92rem; margin:0 0 20px}
-/* cable stripe: the three VVF core colours */
-.stripe{display:flex; gap:4px; margin:0 0 22px}
-.stripe span{height:6px; flex:1; border-radius:3px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;line-height:1.6}
+main{max-width:640px;margin:0 auto;padding:20px 18px 48px}
+h1{font-size:1.5rem;font-weight:900;margin:0 0 4px;letter-spacing:.02em}
+h2{font-size:1.1rem;font-weight:900;margin:30px 0 10px}
+.sub{color:var(--muted);font-size:.92rem;margin:0 0 20px}
+.stripe{display:flex;gap:4px;margin:0 0 22px}
+.stripe span{height:6px;flex:1;border-radius:3px}
 .stripe span:nth-child(1){background:var(--black)}
-.stripe span:nth-child(2){background:#fff; border:1px solid var(--line)}
+.stripe span:nth-child(2){background:#fff;border:1px solid var(--line)}
 .stripe span:nth-child(3){background:var(--red)}
-.tools{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px}
 button{font:inherit}
-.tool{
-  border:1.5px solid var(--ink); background:transparent; color:var(--ink);
-  padding:7px 14px; border-radius:999px; font-size:.9rem; font-weight:700; cursor:pointer;
-}
-.tool:hover{background:var(--ink); color:var(--sheath)}
-.list{list-style:none; margin:0; padding:0; border-top:1px solid var(--line)}
-.card{border-bottom:1px solid var(--line)}
-.card button{
-  width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
-  background:transparent; border:0; color:inherit; text-align:left;
-  padding:14px 4px; cursor:pointer; min-height:56px;
-}
-.q{font-weight:700; font-size:1.02rem}
-.a{
-  flex:none; min-width:6.5em; text-align:center; padding:4px 10px; border-radius:6px;
-  background:var(--hide); color:transparent; font-weight:900; font-size:1.1rem;
-  transition:background .15s, color .15s; user-select:none;
-}
-.a::before{content:"タップで表示"; color:var(--muted); font-size:.75rem; font-weight:700}
-.card.open .a{background:transparent; color:var(--red)}
+button:focus-visible{outline:2.5px solid var(--red);outline-offset:2px}
+.tabs{display:flex;gap:2px;margin:0 0 22px;border-bottom:1.5px solid var(--line);overflow-x:auto}
+.tab{flex:none;border:0;background:transparent;color:var(--muted);padding:10px 12px;font-weight:900;font-size:1rem;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--red)}
+.panel[hidden]{display:none}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tool{border:1.5px solid var(--ink);background:transparent;color:var(--ink);padding:7px 14px;border-radius:999px;font-size:.9rem;font-weight:700;cursor:pointer}
+.tool:hover:not(:disabled),.tool[aria-pressed="true"]{background:var(--ink);color:var(--sheath)}
+.tool:disabled{opacity:.4;cursor:default}
+.prog{color:var(--muted);font-size:.9rem;font-weight:700;margin:0 0 10px}
+.prog b{color:var(--ok)}
+.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.card{border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.card[hidden]{display:none}
+.rev{flex:1;display:flex;align-items:center;justify-content:space-between;gap:12px;background:transparent;border:0;color:inherit;text-align:left;padding:14px 4px;cursor:pointer;min-height:56px}
+.q{font-weight:700;font-size:1.02rem}
+.card.isknown .q{color:var(--muted)}
+.a{flex:none;min-width:6.5em;text-align:center;padding:4px 10px;border-radius:6px;background:var(--hide);color:transparent;font-weight:900;font-size:1.1rem;transition:background .15s,color .15s;user-select:none}
+.a::before{content:"タップで表示";color:var(--muted);font-size:.75rem;font-weight:700}
+.card.open .a{background:transparent;color:var(--red)}
 .card.open .a::before{content:none}
-button:focus-visible{outline:2.5px solid var(--red); outline-offset:2px}
-.sum{margin-top:28px; border:1.5px solid var(--line); border-radius:10px; background:var(--sheath)}
-.sum > button{
-  width:100%; background:transparent; border:0; color:inherit; cursor:pointer;
-  display:flex; justify-content:space-between; align-items:center;
-  padding:14px 16px; font-weight:900; font-size:1.05rem;
-}
+.known{flex:none;border:1.5px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:5px 11px;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.known[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
+.sum{margin-top:28px;border:1.5px solid var(--line);border-radius:10px;background:var(--sheath)}
+.sum>button{width:100%;background:transparent;border:0;color:inherit;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;font-weight:900;font-size:1.05rem}
 .chev{transition:transform .2s}
 .sum.open .chev{transform:rotate(90deg)}
-.sum .body{display:none; padding:0 12px 14px}
+.sum .body{display:none;padding:0 12px 14px}
 .sum.open .body{display:block}
 .scroll{overflow-x:auto}
-table{border-collapse:collapse; width:100%; font-size:.92rem; min-width:420px}
-th,td{padding:8px 8px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top}
-th{color:var(--muted); font-weight:700; font-size:.82rem}
-td.t{font-weight:900; color:var(--red); white-space:nowrap}
-td.k{font-weight:900; white-space:nowrap}
-.hint{margin-top:12px; font-size:.88rem; color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:360px}
+th,td{padding:8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:700;font-size:.82rem}
+td.t{font-weight:900;color:var(--red);white-space:nowrap}
+td.k{font-weight:900;white-space:nowrap}
+.rules td.k{color:var(--red)}
+.hint{margin-top:12px;font-size:.88rem;color:var(--muted)}
+.src{margin-top:16px;font-size:.8rem;color:var(--muted)}
+.bar{display:flex;justify-content:space-between;align-items:center;font-weight:700;color:var(--muted);font-size:.9rem;margin-bottom:10px}
+.photo{background:#24465e;border-radius:10px;padding:10px;display:flex;justify-content:center}
+.photo img{max-width:100%;max-height:340px;display:block;border-radius:4px}
+.combo{background:var(--sheath);border:1.5px solid var(--line);border-radius:10px;padding:22px 12px;text-align:center;font-size:1.5rem;font-weight:900;letter-spacing:.02em}
+.ask{font-weight:900;font-size:1.08rem;margin:16px 0 10px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ch{border:1.5px solid var(--line);background:var(--sheath);color:var(--ink);padding:12px 8px;border-radius:8px;font-weight:900;font-size:1.05rem;cursor:pointer;min-height:52px}
+.ch:hover:not(:disabled){border-color:var(--ink)}
+.ch.right{border-color:var(--ok);color:var(--ok)}
+.ch.wrong{border-color:var(--red);color:var(--red);text-decoration:line-through}
+.ch:disabled{cursor:default}
+.exp{margin-top:14px;padding:12px 14px;border-left:4px solid var(--ok);background:var(--sheath);border-radius:0 8px 8px 0}
+.exp.bad{border-left-color:var(--red)}
+.exp b{color:var(--red)}
+.after{display:flex;gap:8px;align-items:center;margin-top:14px}
+.after .known{padding:12px 16px;font-size:.95rem}
+.next{flex:1;border:0;background:var(--ink);color:var(--sheath);padding:13px;border-radius:999px;font-weight:900;cursor:pointer}
+.done{text-align:center;padding:24px 0}
+.done .score{font-size:2.6rem;font-weight:900}
+.done .tools{justify-content:center}
+.reset{margin-top:40px;border-top:1px solid var(--line);padding-top:16px;font-size:.85rem;color:var(--muted)}
+.reset button{border:0;background:transparent;color:var(--red);font-weight:700;text-decoration:underline;cursor:pointer;padding:0}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <main>
-  <h1>ケーブルの最高許容温度</h1>
-  <p class="sub">問題をタップすると答えが出ます。もう一度タップで隠れます。</p>
-  <div class="stripe" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="tabs" role="tablist">
+<button class="tab" role="tab" aria-controls="cable" aria-selected="true">ケーブル温度</button>
+<button class="tab" role="tab" aria-controls="outlet" aria-selected="false">コンセント</button>
+<button class="tab" role="tab" aria-controls="sleeve" aria-selected="false">リングスリーブ</button>
+</div>
 
-  <div class="tools">
-    <button class="tool" id="showAll">全部表示</button>
-    <button class="tool" id="hideAll">全部隠す</button>
-    <button class="tool" id="shuffle">並べ替え</button>
-  </div>
+<section class="panel" id="cable" role="tabpanel">
+<h1>ケーブルの最高許容温度</h1>
+<p class="sub">問題をタップすると答えが出ます。覚えたものは「覚えた」を押すと、この端末に記録されます。</p>
+<div class="stripe" aria-hidden="true"><span></span><span></span><span></span></div>
+<div id="cableCards"></div>
+<section class="sum">
+<button aria-expanded="false"><span>まとめ表</span><span class="chev" aria-hidden="true">▶</span></button>
+<div class="body"><div class="scroll"><table>
+<thead><tr><th>略号</th><th>名称</th><th>最高許容温度</th></tr></thead>
+<tbody>
+<tr><td class="k">VVF</td><td>ビニル絶縁ビニル外装ケーブル平形</td><td class="t">60℃</td></tr>
+<tr><td class="k">VVR</td><td>ビニル絶縁ビニル外装ケーブル丸形</td><td class="t">60℃</td></tr>
+<tr><td class="k">EM-EEF</td><td>エコマテリアル ポリエチレン絶縁 耐熱性ポリエチレンシースケーブル平形</td><td class="t">75℃</td></tr>
+<tr><td class="k">CV</td><td>架橋ポリエチレン絶縁ビニルシースケーブル</td><td class="t">90℃</td></tr>
+<tr><td class="k">MI</td><td>無機絶縁ケーブル</td><td class="t">250℃</td></tr>
+</tbody></table></div>
+<p class="hint">温度は絶縁体の材料で決まります：ビニル 60℃ → ポリエチレン 75℃ → 架橋ポリエチレン 90℃ → 無機物 250℃</p>
+</div>
+</section>
+</section>
 
-  <ul class="list" id="list"></ul>
+<section class="panel" id="outlet" role="tabpanel" hidden>
+<h1>コンセントの傍記</h1>
+<p class="sub">写真のコンセントの図記号に付く傍記を選んでください。</p>
+<div id="outletQuiz"></div>
+<section class="sum rules">
+<button aria-expanded="false"><span>見分け方</span><span class="chev" aria-hidden="true">▶</span></button>
+<div class="body"><div class="scroll"><table>
+<tr><th>見た目</th><th>傍記</th><th>意味</th></tr>
+<tr><td>刃受けがL字</td><td class="k">20A</td><td>20A用</td></tr>
+<tr><td>刃受けが縦に直線</td><td class="k">250V</td><td>250V用</td></tr>
+<tr><td>丸い穴（接地極）</td><td class="k">E</td><td>接地極付</td></tr>
+<tr><td>ネジ式の端子</td><td class="k">ET</td><td>接地端子付</td></tr>
+</table></div>
+<p class="src">写真の引用元：一般財団法人 電気技術者試験センター</p>
+</div>
+</section>
+</section>
 
-  <section class="sum" id="sum">
-    <button aria-expanded="false" aria-controls="sumBody"><span>まとめ表</span><span class="chev" aria-hidden="true">▶</span></button>
-    <div class="body" id="sumBody">
-      <div class="scroll">
-        <table>
-          <thead><tr><th>略号</th><th>名称</th><th>最高許容温度</th></tr></thead>
-          <tbody>
-            <tr><td class="k">VVF</td><td>ビニル絶縁ビニル外装ケーブル平形</td><td class="t">60℃</td></tr>
-            <tr><td class="k">VVR</td><td>ビニル絶縁ビニル外装ケーブル丸形</td><td class="t">60℃</td></tr>
-            <tr><td class="k">EM-EEF</td><td>エコマテリアル ポリエチレン絶縁 耐熱性ポリエチレンシースケーブル平形</td><td class="t">75℃</td></tr>
-            <tr><td class="k">CV</td><td>架橋ポリエチレン絶縁ビニルシースケーブル</td><td class="t">90℃</td></tr>
-            <tr><td class="k">MI</td><td>無機絶縁ケーブル</td><td class="t">250℃</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="hint">温度は絶縁体の材料で決まります：ビニル 60℃ → ポリエチレン 75℃ → 架橋ポリエチレン 90℃ → 無機物 250℃</p>
-    </div>
-  </section>
+<section class="panel" id="sleeve" role="tabpanel" hidden>
+<h1>リングスリーブのサイズと刻印</h1>
+<p class="sub">電線の太さを断面積に換算して合計し、スリーブの大きさと刻印を決めます。</p>
+<h2>覚えること</h2>
+<div id="sleeveCards"></div>
+<h2>組み合わせ問題</h2>
+<div id="sleeveQuiz"></div>
+<section class="sum rules">
+<button aria-expanded="false"><span>まとめ表</span><span class="chev" aria-hidden="true">▶</span></button>
+<div class="body">
+<div class="scroll"><table>
+<tr><th>太さ</th><th>断面積</th><th>許容電流</th></tr>
+<tr><td>1.6mm</td><td class="k">2.0mm²</td><td>27A</td></tr>
+<tr><td>2.0mm</td><td class="k">3.5mm²</td><td>35A / 37A</td></tr>
+<tr><td>2.6mm</td><td class="k">5.5mm²</td><td>48A / 49A</td></tr>
+</table></div>
+<div class="scroll" style="margin-top:14px"><table>
+<tr><th>断面積の合計</th><th>サイズ</th><th>刻印</th></tr>
+<tr><td>8mm² 以下</td><td class="k">小</td><td>小（1.6mm×2 だけは ○）</td></tr>
+<tr><td>8mm² 超え 14mm² 以下</td><td class="k">中</td><td>中</td></tr>
+<tr><td>14mm² 超え 16.5mm² 以下</td><td class="k">大</td><td>大</td></tr>
+</table></div>
+<p class="hint">境目は「8mm² 含めて小、14mm² 含めて中」。許容電流の左は単線の太さ、右はより線の断面積のときの値です。</p>
+</div>
+</section>
+</section>
+
+<div class="reset">覚えた記録はこのブラウザに保存されます。<button id="resetAll">記録をすべて消す</button></div>
 </main>
 <script>
-const cards = [
-  ["VVF の最高許容温度は？","60℃"],
-  ["VVR の最高許容温度は？","60℃"],
-  ["EM-EEF の最高許容温度は？","75℃"],
-  ["CV の最高許容温度は？","90℃"],
-  ["MI の最高許容温度は？","250℃"],
-  ["60℃のケーブルは？","VVF・VVR"],
-  ["75℃のケーブルは？","EM-EEF"],
-  ["90℃のケーブルは？","CV"],
-  ["250℃のケーブルは？","MI"]
-];
-const list = document.getElementById("list");
-function render(order){
-  list.innerHTML = "";
-  order.forEach(([q,a])=>{
-    const li = document.createElement("li");
-    li.className = "card";
-    const b = document.createElement("button");
-    b.setAttribute("aria-expanded","false");
-    b.innerHTML = `<span class="q"></span><span class="a"></span>`;
-    b.querySelector(".q").textContent = q;
-    b.querySelector(".a").textContent = a;
-    b.addEventListener("click",()=>{
-      const open = li.classList.toggle("open");
-      b.setAttribute("aria-expanded", open);
+const KEY='denko-known-v1';
+let known=new Set();
+try{known=new Set(JSON.parse(localStorage.getItem(KEY)||'[]'))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify([...known]))}catch(e){}};
+const listeners=[];
+function setKnown(id,on){on?known.add(id):known.delete(id);save();listeners.forEach(f=>f())}
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function knownBtn(id,onChange){
+  const b=document.createElement('button');b.type='button';b.className='known';
+  const upd=()=>{const on=known.has(id);b.setAttribute('aria-pressed',on);b.textContent=on?'✓ 覚えた':'覚えた'};
+  upd();b.onclick=()=>{setKnown(id,!known.has(id));upd();onChange&&onChange()};
+  return b;
+}
+function getPref(k){try{return localStorage.getItem(k)==='1'}catch(e){return false}}
+function setPref(k,v){try{localStorage.setItem(k,v?'1':'0')}catch(e){}}
+
+function makeCards(root,cards,prefix){
+  const all=cards.map((c,i)=>({q:c[0],a:c[1],id:prefix+i}));
+  let order=all.slice(),hideK=getPref(KEY+'-hide-'+prefix);
+  root.innerHTML=`<div class="tools"><button class="tool" data-act="show">全部表示</button><button class="tool" data-act="hide">全部隠す</button><button class="tool" data-act="shuffle">並べ替え</button><button class="tool" data-act="filter">覚えたものを隠す</button></div><p class="prog"></p><ul class="list"></ul>`;
+  const ul=root.querySelector('.list'),prog=root.querySelector('.prog'),fb=root.querySelector('[data-act=filter]');
+  function progress(){
+    const n=all.filter(c=>known.has(c.id)).length;
+    prog.innerHTML=`覚えた <b>${n}</b> / ${all.length}`+(hideK&&n===all.length?'　全部覚えました。':'');
+  }
+  function paint(){
+    fb.setAttribute('aria-pressed',hideK);ul.innerHTML='';
+    order.forEach(c=>{
+      const li=document.createElement('li');li.className='card';
+      const b=document.createElement('button');b.className='rev';b.setAttribute('aria-expanded','false');
+      b.innerHTML='<span class="q"></span><span class="a"></span>';
+      b.querySelector('.q').textContent=c.q;b.querySelector('.a').textContent=c.a;
+      b.onclick=()=>b.setAttribute('aria-expanded',li.classList.toggle('open'));
+      const k=knownBtn(c.id,()=>li.classList.toggle('isknown',known.has(c.id)));
+      li.classList.toggle('isknown',known.has(c.id));
+      if(hideK&&known.has(c.id))li.hidden=true;
+      li.append(b,k);ul.appendChild(li);
     });
-    li.appendChild(b);
-    list.appendChild(li);
-  });
+    progress();
+  }
+  root.querySelector('[data-act=show]').onclick=()=>ul.querySelectorAll('.card').forEach(li=>{li.classList.add('open');li.querySelector('.rev').setAttribute('aria-expanded','true')});
+  root.querySelector('[data-act=hide]').onclick=()=>ul.querySelectorAll('.card').forEach(li=>{li.classList.remove('open');li.querySelector('.rev').setAttribute('aria-expanded','false')});
+  root.querySelector('[data-act=shuffle]').onclick=()=>{order=shuf(all);paint()};
+  fb.onclick=()=>{hideK=!hideK;setPref(KEY+'-hide-'+prefix,hideK);paint()};
+  listeners.push(progress);
+  paint();
+  return paint;
 }
-render(cards);
-function setAll(open){
-  document.querySelectorAll(".card").forEach(li=>{
-    li.classList.toggle("open",open);
-    li.querySelector("button").setAttribute("aria-expanded",open);
-  });
+
+function makeQuiz(root,items,label){
+  let list,idx,score;
+  function home(){
+    const n=items.filter(i=>known.has(i.id)).length,rest=items.length-n;
+    root.innerHTML=`<p class="prog">覚えた <b>${n}</b> / ${items.length}</p><div class="tools"><button class="tool" data-act="all">全部解く（${items.length}問）</button><button class="tool" data-act="rest" ${rest?'':'disabled'}>まだのものだけ（${rest}問）</button></div>`+(rest?'':'<p class="hint">全部「覚えた」になっています。</p>');
+    root.querySelector('[data-act=all]').onclick=()=>run(items);
+    root.querySelector('[data-act=rest]').onclick=()=>run(items.filter(i=>!known.has(i.id)));
+  }
+  function run(l){list=shuf(l);idx=0;score=0;show()}
+  function show(){
+    if(idx>=list.length){
+      root.innerHTML=`<div class="done"><div class="score">${score} / ${list.length}</div><p>${score===list.length?'全問正解です。':'間違えた問題は表で確認しましょう。'}</p><div class="tools"><button class="tool" data-act="again">もう一度解く</button><button class="tool" data-act="home">最初の画面へ</button></div></div>`;
+      root.querySelector('[data-act=again]').onclick=()=>run(list);
+      root.querySelector('[data-act=home]').onclick=home;return;
+    }
+    const it=list[idx];
+    root.innerHTML=`<div class="bar"><span>第${idx+1}問 / ${list.length}</span><span>正解 ${score}</span></div>${it.top}<p class="ask">${it.ask}</p><div class="choices">${it.choices().map(o=>`<button class="ch">${o}</button>`).join('')}</div><div class="slot"></div>`;
+    const btns=[...root.querySelectorAll('.ch')];
+    btns.forEach(b=>b.onclick=()=>{
+      const ok=b.textContent===it.a;if(ok)score++;
+      btns.forEach(x=>{x.disabled=true;if(x.textContent===it.a)x.classList.add('right')});
+      if(!ok)b.classList.add('wrong');
+      const slot=root.querySelector('.slot');
+      slot.innerHTML=`<div class="exp${ok?'':' bad'}">${ok?'正解。':`不正解。正解は <b>${it.a}</b>。`}${it.e}</div><div class="after"></div>`;
+      const nx=document.createElement('button');nx.className='next';nx.textContent=idx+1<list.length?'次の問題':'結果を見る';
+      nx.onclick=()=>{idx++;show();root.scrollIntoView({block:'start'})};
+      slot.querySelector('.after').append(knownBtn(it.id),nx);nx.focus();
+    });
+  }
+  listeners.push(()=>{if(root.querySelector('[data-act=all]'))home()});
+  home();
 }
-document.getElementById("showAll").onclick = ()=>setAll(true);
-document.getElementById("hideAll").onclick = ()=>setAll(false);
-document.getElementById("shuffle").onclick = ()=>{
-  const c = cards.slice();
-  for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];}
-  render(c);
-};
-const sum = document.getElementById("sum");
-const sb = sum.querySelector("button");
-sb.addEventListener("click",()=>{
-  const open = sum.classList.toggle("open");
-  sb.setAttribute("aria-expanded",open);
-});
+
+makeCards(document.getElementById('cableCards'),[
+  ["VVF の最高許容温度は？","60℃"],["VVR の最高許容温度は？","60℃"],["EM-EEF の最高許容温度は？","75℃"],
+  ["CV の最高許容温度は？","90℃"],["MI の最高許容温度は？","250℃"],["60℃のケーブルは？","VVF・VVR"],
+  ["75℃のケーブルは？","EM-EEF"],["90℃のケーブルは？","CV"],["250℃のケーブルは？","MI"]
+],'c');
+
+const OUT=[{"a": "20A", "e": "刃受けの片側が<b>L字</b>なので20A用。丸い接地極の穴はないので傍記は20Aだけ。", "img": "data:image/webp;base64,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"}, {"a": "E 20A", "e": "<b>L字</b>で20A、丸い穴の<b>接地極</b>があるのでE。接地端子はない。", "img": "data:image/webp;base64,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"}, {"a": "EET 20A", "e": "<b>L字</b>で20A、接地極の<b>E</b>、下のネジ式の<b>接地端子</b>でET。", "img": "data:image/webp;base64,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"}, {"a": "E 250V", "e": "刃受けが<b>直線</b>（縦にまっすぐ）なので250V用。接地極があるのでE。", "img": "data:image/webp;base64,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"}, {"a": "E 20A250V", "e": "<b>直線</b>で250V、もう片方が<b>L字</b>で20A、接地極でE。", "img": "data:image/webp;base64,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"}, {"a": "EET 20A250V", "e": "<b>直線</b>で250V、<b>L字</b>で20A、接地極のE、ネジ式の接地端子でET。", "img": "data:image/webp;base64,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"}];
+const OUTANS=OUT.map(x=>x.a);
+makeQuiz(document.getElementById('outletQuiz'),OUT.map((x,i)=>({
+  id:'o'+i,a:x.a,e:x.e,ask:'このコンセントの傍記は？',
+  top:`<div class="photo"><img src="${x.img}" alt="コンセントの写真"></div>`,
+  choices:()=>shuf([x.a,...shuf(OUTANS.filter(a=>a!==x.a)).slice(0,3)])
+})));
+
+makeCards(document.getElementById('sleeveCards'),[
+  ["1.6mm を断面積に換算すると？","2.0mm²"],["2.0mm を断面積に換算すると？","3.5mm²"],["2.6mm を断面積に換算すると？","5.5mm²"],
+  ["合計 8mm² 以下のスリーブは？","小"],["合計 8mm² 超え 14mm² 以下は？","中"],["合計 14mm² 超え 16.5mm² 以下は？","大"],
+  ["合計がちょうど 8mm² のときは？","小"],["合計がちょうど 14mm² のときは？","中"],["刻印が「○」になるのは？","1.6mm×2"]
+],'s');
+
+const AREA={'1.6':2.0,'2.0':3.5,'2.6':5.5};
+const COMBOS=[[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0],[7,0,0],[0,2,0],[0,3,0],[0,4,0],[1,1,0],[2,1,0],[3,1,0],[1,2,0],[2,2,0],[1,0,1],[2,0,1],[0,1,1],[0,2,1],[0,0,2],[1,0,2],[0,1,2],[0,0,3]];
+const SL=['小・○','小・小','中・中','大・大'];
+makeQuiz(document.getElementById('sleeveQuiz'),COMBOS.map(([a,b,c])=>{
+  const parts=[['1.6',a],['2.0',b],['2.6',c]].filter(p=>p[1]);
+  const total=Math.round(parts.reduce((s,[d,n])=>s+AREA[d]*n,0)*10)/10;
+  const special=a===2&&!b&&!c;
+  const size=total<=8?'小':total<=14?'中':'大';
+  const mark=special?'○':size;
+  const calc=parts.map(([d,n])=>`${AREA[d].toFixed(1)}×${n}`).join(' ＋ ');
+  const rule=size==='小'?'8mm² 以下なので<b>小</b>':size==='中'?'8mm² を超えて 14mm² 以下なので<b>中</b>':'14mm² を超えて 16.5mm² 以下なので<b>大</b>';
+  return{
+    id:'r'+parts.map(([d,n])=>d.replace('.','')+'x'+n).join('_'),
+    a:`${size}・${mark}`,ask:'スリーブの大きさと刻印は？',
+    top:`<div class="combo">${parts.map(([d,n])=>`${d}mm×${n}`).join(' ＋ ')}</div>`,
+    e:`${calc} ＝ <b>${total}mm²</b>。${rule}。`+(special?'1.6mm×2 だけなので刻印は<b>○</b>。':`刻印も<b>${size}</b>。`),
+    choices:()=>SL.slice()
+  };
+}));
+
+document.querySelectorAll('.sum').forEach(s=>{const b=s.querySelector('button');b.onclick=()=>b.setAttribute('aria-expanded',s.classList.toggle('open'))});
+const repaints=[];
+document.getElementById('resetAll').onclick=()=>{if(confirm('覚えた記録をすべて消しますか？')){known=new Set();save();location.reload()}};
+
+const tabs=[...document.querySelectorAll('.tab')];
+function openTab(id){
+  tabs.forEach(t=>{const on=t.getAttribute('aria-controls')===id;t.setAttribute('aria-selected',on);document.getElementById(t.getAttribute('aria-controls')).hidden=!on});
+  history.replaceState(null,'','#'+id);
+}
+tabs.forEach(t=>t.onclick=()=>openTab(t.getAttribute('aria-controls')));
+const h=location.hash.slice(1);if(['outlet','sleeve'].includes(h))openTab(h);
 </script>
 </body>
 </html>
